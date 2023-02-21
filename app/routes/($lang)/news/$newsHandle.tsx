@@ -14,12 +14,12 @@ import {ATTR_LOADING_EAGER} from '~/lib/const';
 import styles from '../../../styles/custom-font.css';
 import type {SeoHandleFunction} from '@shopify/hydrogen';
 
-const BLOG_HANDLE = 'journal';
+const BLOG_HANDLE = 'news';
 
 const seo: SeoHandleFunction<typeof loader> = ({data}) => ({
   title: data?.article?.seo?.title,
   description: data?.article?.seo?.description,
-  titleTemplate: '%s | Journal',
+  titleTemplate: '%s | News',
 });
 
 export const handle = {
@@ -29,14 +29,14 @@ export const handle = {
 export async function loader({params, context}: LoaderArgs) {
   const {language, country} = context.storefront.i18n;
 
-  invariant(params.journalHandle, 'Missing journal handle');
+  invariant(params.newsHandle, 'Missing news handle');
 
   const {blog} = await context.storefront.query<{
     blog: Blog;
   }>(ARTICLE_QUERY, {
     variables: {
       blogHandle: BLOG_HANDLE,
-      articleHandle: params.journalHandle,
+      articleHandle: params.newsHandle,
       language,
     },
   });

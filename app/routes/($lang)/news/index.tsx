@@ -6,11 +6,11 @@ import {Grid, PageHeader, Section, Link} from '~/components';
 import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
 import {StorefrontLoaderArgs} from '~/lib/type';
 
-const BLOG_HANDLE = 'Journal';
+const BLOG_HANDLE = 'news';
 
 export const handle = {
   seo: {
-    title: 'Journal',
+    title: 'News',
   },
 };
 
