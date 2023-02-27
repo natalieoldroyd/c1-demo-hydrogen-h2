@@ -98,7 +98,7 @@ function ReturnToResponse(return_to) {
   });
 }
 
-console.log(process.env.multipassSecret);
+let testVar = process.env.multipassSecret;
 
 const CUSTOMER_ACCESS_TOKEN_FROM_TOKEN_MUTATION = `#graphql
   mutation customerAccessTokenCreateWithMultipass($multipassToken: String!) {
