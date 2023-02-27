@@ -28,7 +28,8 @@ export async function api(request, {session, params, queryShop}) {
 
   // create a multipassify instance
   const multipassify = new Multipassify(process.env.multipassSecret);
-  console.log('multipassify', multipassify)
+  // console.log('multipassify', multipassify);
+  console.log(process.env);
 
   try {
     // extract customer from the multipass token
