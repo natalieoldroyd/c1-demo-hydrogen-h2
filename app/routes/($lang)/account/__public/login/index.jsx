@@ -95,7 +95,7 @@ export async function api(request, {session, queryShop}) {
       // generate a multipass url and token
       const multipassify = new Multipassify(
         // @ts-ignore
-        process.env.multipassSecret,
+        Oxygen?.process.env.multipassSecret,
       );
 
       const customerInfo = {
@@ -109,7 +109,7 @@ export async function api(request, {session, queryShop}) {
       const data = multipassify.generate(
         customerInfo,
         // @ts-ignore
-        process.env.PUBLIC_STORE_DOMAIN,
+        Oxygen?.process.env.PUBLIC_STORE_DOMAIN,
         request,
       );
       if (!data?.url) {
