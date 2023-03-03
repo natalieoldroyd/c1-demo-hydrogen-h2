@@ -19,6 +19,7 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {useFetcher} from '@remix-run/react';
 import {CartAction} from '~/lib/type';
+import {CheckoutButtonMultipass} from '~/components/CheckoutButtonMultipass';
 
 type Layouts = 'page' | 'drawer';
 
@@ -174,16 +175,7 @@ function CartLines({
 function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   if (!checkoutUrl) return null;
 
-  return (
-    <div className="flex flex-col mt-2">
-      <a href={checkoutUrl} target="_self">
-        <Button as="span" width="full">
-          Continue to Checkout
-        </Button>
-      </a>
-      {/* @todo: <CartShopPayButton cart={cart} /> */}
-    </div>
-  );
+  return <CheckoutButtonMultipass checkoutUrl={checkoutUrl} />;
 }
 
 function CartSummary({
