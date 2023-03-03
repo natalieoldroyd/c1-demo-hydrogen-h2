@@ -1,6 +1,6 @@
 // import {useCart} from '@shopify/hydrogen';
-import {multipass} from '../../lib/multipass';
-import {Button} from '~/components/elements';
+import {multipass} from '../lib/multipass';
+import {Button} from '~/components/Button';
 
 /*
   This component attempts to persist the customer session
