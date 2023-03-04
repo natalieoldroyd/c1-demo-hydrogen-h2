@@ -21,8 +21,6 @@ export async function loader({params, context}) {
   const {shop, hero} = await context.storefront.query(HOMEPAGE_SEO_QUERY, {
     variables: {handle: 'frontpage'},
   });
-  console.log(hero)
-
   return defer({
     shop,
     primaryHero: hero,
@@ -44,7 +42,7 @@ export async function loader({params, context}) {
     ),
     secondaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
       variables: {
-        handle: 'backcountry',
+        handle: 'secondaryHero',
         country,
         language,
       },
@@ -57,7 +55,7 @@ export async function loader({params, context}) {
     }),
     tertiaryHero: context.storefront.query(COLLECTION_HERO_QUERY, {
       variables: {
-        handle: 'winter-2022',
+        handle: 'tertiaryHero',
         country,
         language,
       },
