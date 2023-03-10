@@ -63,7 +63,6 @@ export const action: ActionFunction = async ({request, context}) => {
       checkoutDomain,
       request,
     );
-    // console.log('datamultipassurl', dataMultipass.url)
     return redirect(dataMultipass.url);
   } catch (error) {
     console.log('error');
