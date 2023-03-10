@@ -14,7 +14,7 @@ import clsx from 'clsx';
 import invariant from 'tiny-invariant';
 import {Button, Text} from '~/components';
 import {getInputStyleClasses, assertApiErrors} from '~/lib/utils';
-import {getCustomer} from '../../account';
+import {getCustomer} from '../__public';
 
 export interface AccountOutletContext {
   customer: Customer;
