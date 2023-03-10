@@ -9,12 +9,16 @@ declare global {
   /**
    * A global `process` object is only available during build to access NODE_ENV.
    */
-  const process: {env: {NODE_ENV: 'production' | 'development'}};
+  const process: {env: {
+    SHOPIFY_STORE_DOMAIN: any;NODE_ENV: 'production' | 'development'
+}};
 
   /**
    * Declare expected Env parameter in fetch handler.
    */
   interface Env {
+    SHOPIFY_STORE_MULTIPASS_SECRET: string;
+    SHOPIFY_CHECKOUT_DOMAIN: string;
     SESSION_SECRET: string;
     PUBLIC_STOREFRONT_API_TOKEN: string;
     PRIVATE_STOREFRONT_API_TOKEN: string;

@@ -6,13 +6,16 @@ import {
   type AppLoadContext,
   type LoaderArgs,
 } from '@shopify/remix-oxygen';
-import {Form, useActionData, useLoaderData} from '@remix-run/react';
+import {useActionData, useLoaderData} from '@remix-run/react';
 import {LoginForm} from '~/components/LoginForm';
 import type {CustomerAccessTokenCreatePayload} from '@shopify/hydrogen/storefront-api-types';
+// import {Multipassify} from '~/lib/multipassify';
 
 export const handle = {
   isPublic: true,
 };
+
+//this route just logs in customer and generates a customer access token.
 
 export async function loader({context, params}: LoaderArgs) {
   const customerAccessToken = await context.session.get('customerAccessToken');
@@ -21,8 +24,11 @@ export async function loader({context, params}: LoaderArgs) {
     return redirect(params.lang ? `${params.lang}/account` : '/account');
   }
 
+  const shopDomain = context.env.SHOPIFY_CHECKOUT_DOMAIN;
+  console.log('shopdomain', shopDomain);
+
   // TODO: Query for this?
-  return json({shopName: 'Hydrogen'});
+  return json({shopDomain});
 }
 
 type ActionData = {
@@ -33,10 +39,8 @@ const badRequest = (data: ActionData) => json(data, {status: 400});
 
 export const action: ActionFunction = async ({request, context, params}) => {
   const formData = await request.formData();
-
   const email = formData.get('email');
   const password = formData.get('password');
-
   if (
     !email ||
     !password ||
@@ -84,10 +88,10 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Login() {
-  const {shopName} = useLoaderData<typeof loader>();
+  const {shopDomain} = useLoaderData<typeof loader>();
   const actionData = useActionData<ActionData>();
 
-  return <LoginForm shopName={shopName} actionData={actionData} />;
+  return <LoginForm shopName={shopDomain} actionData={actionData} />;
 }
 
 const LOGIN_MUTATION = `#graphql
