@@ -174,8 +174,18 @@ function CartLines({
 
 function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   if (!checkoutUrl) return null;
+  console.log('co CartCheckoutActions', checkoutUrl);
 
-  return <CheckoutButtonMultipass checkoutUrl={checkoutUrl} />;
+  return (
+    <div className="flex flex-col mt-2">
+      <CheckoutButtonMultipass checkoutUrl={checkoutUrl}>
+        <Button as="span" width="full">
+          Continue to Checkout
+        </Button>
+      </CheckoutButtonMultipass>
+      {/* @todo: <CartShopPayButton cart={cart} /> */}
+    </div>
+  );
 }
 
 function CartSummary({

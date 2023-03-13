@@ -1,5 +1,6 @@
-import * as CryptoJS from 'crypto-js';
 import snake_cake from 'snakecase-keys';
+import CryptoJS from 'crypto-js';
+import type {MultipassCustomer} from './types';
 
 /*
   Shopify multipassify implementation for node and v8/worker runtime
@@ -9,7 +10,11 @@ import snake_cake from 'snakecase-keys';
   @see: https://github.com/beaucoo/multipassify — Previous art for Node-only runtime
 */
 export class Multipassify {
-  constructor(secret) {
+  private readonly BLOCK_SIZE: number;
+  private encryptionKey: CryptoJS.lib.WordArray;
+  private signingKey: CryptoJS.lib.WordArray;
+
+  public constructor(secret: string) {
     if (!(typeof secret == 'string' && secret.length > 0)) {
       throw new Error('Invalid Secret');
     }
@@ -32,7 +37,11 @@ export class Multipassify {
 
   // Generates an auth `token` and `url` for a customer based
   // on the `return_to` url property found in the customer object
-  generate(customer, shopifyDomain, request) {
+  public generate(
+    customer: MultipassCustomer,
+    shopifyDomain: string,
+    request: Request,
+  ) {
     if (!shopifyDomain) {
       throw new Error('domain is required');
     }
@@ -43,24 +52,24 @@ export class Multipassify {
     // Generate a token
     const token = this.generateToken(snake_cake(customer));
 
-    // For onsite requests, we use the request's origin
+    // Get the origin of the request
     const toOrigin = new URL(request.url).origin;
 
-    // checkout is offsite, we use the shopify domain for auth
     const redirectToCheckout = customer.return_to
-      ? customer.return_to.includes('cart')
+      ? customer.return_to.includes('cart/c') ||
+        customer.return_to.includes('checkout')
       : false;
 
-    return {
-      url: redirectToCheckout
-        ? `https://${shopifyDomain}/account/login/multipass/${token}` // uses checkout multipass auth
-        : `${toOrigin}/account/login/multipass/${token}`, // uses local multipass verification. @see: api route
-      token,
-    };
+    // if the target url is the checkout, we use the shopify domain liquid auth
+    const toUrl = redirectToCheckout
+      ? `https://${shopifyDomain}/account/login/multipass/${token}` // uses liquid multipass auth
+      : `${toOrigin}/account/login/multipass/${token}`; // uses local multipass verification. @see: api route
+
+    return {url: toUrl, token};
   }
 
   // Generates a token
-  generateToken(customer) {
+  public generateToken(customer: MultipassCustomer): string {
     // Store the current time in ISO8601 format.
     // The token will only be valid for a small time-frame around this timestamp.
     customer.created_at = new Date().toISOString();
@@ -80,7 +89,7 @@ export class Multipassify {
   }
 
   // encrypt the customer data
-  encrypt(customerText) {
+  private encrypt(customerText: string) {
     // Use a random IV
     const iv = CryptoJS.lib.WordArray.random(this.BLOCK_SIZE);
 
@@ -96,12 +105,12 @@ export class Multipassify {
   }
 
   // signs the encrypted customer data
-  sign(encrypted) {
+  private sign(encrypted: CryptoJS.lib.WordArray) {
     return CryptoJS.HmacSHA256(encrypted, this.signingKey);
   }
 
   // Decrypts the customer data from a multipass token
-  parseToken(token) {
+  public parseToken(token: string): MultipassCustomer {
     // reverse char replaces
     const token64 = token.replace(/-/g, '+').replace(/_/g, '/');
     const tokenBytes = CryptoJS.enc.Base64.parse(token64);
