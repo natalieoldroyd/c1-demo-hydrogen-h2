@@ -39,7 +39,7 @@ export function ProductGallery({
           case 'IMAGE':
             mediaProps = {
               width: 800,
-              widths: [400, 800, 1200, 1600, 2000, 2400],
+              // widths: [400, 800, 1200, 1600, 2000, 2400],
             };
             break;
           case 'VIDEO':

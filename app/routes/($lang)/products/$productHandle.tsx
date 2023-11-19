@@ -111,6 +111,7 @@ export async function loader({params, request, context}: LoaderArgs) {
   return defer({
     product,
     shop,
+    storeDomain: shop.primaryDomain.url,
     recommended,
     analytics: {
       pageType: AnalyticsPageType.product,
@@ -186,7 +187,7 @@ export default function Product() {
 }
 
 export function ProductForm() {
-  const {product, analytics} = useLoaderData<typeof loader>();
+  const {product, analytics, storeDomain} = useLoaderData<typeof loader>();
 
   const [currentSearchParams] = useSearchParams();
   const transition = useTransition();
@@ -288,7 +289,10 @@ export function ProductForm() {
               )}
             </AddToCartButton>
             {!isOutOfStock && (
-              <ShopPayButton variantIds={[selectedVariant?.id!]} />
+              <ShopPayButton
+                variantIds={[selectedVariant?.id!]}
+                storeDomain={storeDomain}
+              />
             )}
           </div>
         )}
@@ -577,6 +581,10 @@ const PRODUCT_QUERY = `#graphql
     }
     shop {
       name
+      primaryDomain {
+        url
+      }
+
       shippingPolicy {
         body
         handle

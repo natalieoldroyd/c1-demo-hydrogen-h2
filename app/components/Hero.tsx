@@ -44,11 +44,11 @@ export function Hero({
                     ? '(min-width: 80em) 700px, (min-width: 48em) 450px, 500px'
                     : '(min-width: 80em) 1400px, (min-width: 48em) 900px, 500px'
                 }
-                widths={
-                  spreadSecondary?.reference
-                    ? [500, 450, 700]
-                    : [500, 900, 1400]
-                }
+                // widths={
+                //   spreadSecondary?.reference
+                //     ? [500, 450, 700]
+                //     : [500, 900, 1400]
+                // }
                 width={spreadSecondary?.reference ? 375 : 750}
                 data={spread.reference as Media}
                 loading={loading}
@@ -59,7 +59,6 @@ export function Hero({
             <div className="hidden md:block">
               <SpreadMedia
                 sizes="(min-width: 80em) 700, (min-width: 48em) 450, 500"
-                widths={[450, 700]}
                 width={375}
                 data={spreadSecondary.reference as Media}
               />

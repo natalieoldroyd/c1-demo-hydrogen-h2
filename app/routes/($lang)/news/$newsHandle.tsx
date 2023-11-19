@@ -96,13 +96,9 @@ export default function Article() {
             data={image}
             className="w-full mx-auto mt-8 md:mt-16 max-w-7xl"
             sizes="90vw"
-            widths={[400, 800, 1200]}
+            // widths={[400, 800, 1200]}
             width="100px"
             loading={ATTR_LOADING_EAGER}
-            loaderOptions={{
-              scale: 2,
-              crop: 'center',
-            }}
           />
         )}
         <div
