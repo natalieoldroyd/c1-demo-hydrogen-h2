@@ -35,10 +35,10 @@ import type {StorefrontContext} from './lib/type';
 
 const seo: SeoHandleFunction<typeof loader> = ({data, pathname}) => ({
   title: data?.layout?.shop?.name,
-  titleTemplate: '%s | Hydrogen Demo Store',
+  titleTemplate: '%s | WeWe.boo Shop',
   description: data?.layout?.shop?.description,
   handle: '@shopify',
-  url: `https://hydrogen.shop${pathname}`,
+  url: `https://wewe.boo${pathname}`,
 });
 
 export const handle = {
